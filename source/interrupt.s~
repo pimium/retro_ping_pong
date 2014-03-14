@@ -1,0 +1,78 @@
+.globl GetInterruptBase
+GetInterruptBase: 
+	ldr r0,=0x2000B000 @200 pending;218 enable basic irq;224 disable basic irq
+	mov pc,lr
+
+.globl DisableBasicIRQ
+DisableBasicIRQ: 
+	ldr r0,=0x2000B000
+@	ldr r1, [r0,#0x224]
+	mov r1, #0
+	str r1, [r0,#0x224]
+	mov pc,lr
+.globl EnableBasicIRQ
+EnableBasicIRQ: 
+	ldr r0,=0x2000B000
+	ldr r1, [r0,#0x218]
+	orr r1, r1, #1
+	str r1, [r0,#0x218]
+	mov pc, lr
+
+.globl EnableTimerInterrupt
+EnableTimerInterrupt:
+	push {lr}
+	bl GetInterruptBase
+	ldr r1, =0x3E00A0
+	str r1,[r0,#0x408] @ reset control register and enable interrupt
+
+	ldr r1, [r0,#0x218]
+	orr r1, r1, #1
+	str r1,[r0,#0x218]
+
+	pop {pc}
+
+.globl EnableIRQ
+EnableIRQ:
+	mrs r1, cpsr
+	bic r1, r1, #0x80
+	msr cpsr_c, r1
+	mov pc,lr
+.globl DisableIRQ
+DisableIRQ:
+	mrs r1, cpsr
+	orr r1, r1, #0x80
+	msr cpsr_c, r1
+	mov pc,lr
+
+.globl InterruptHandler
+InterruptHandler:
+	sub r14,r14,#4
+	stmfd sp!, {r0-r3, r12, r14}
+	bl DisableIRQ
+	bl GetInterruptBase
+	ldr r0, [r0, #0x200]
+	tst r0, #0x00000001
+beq fin$
+	ldr r0, = 0x20003000
+	ldr r2,[r0]
+	tst r2, #2
+	bl timer_isr
+ 
+	@ldr r2, =0x0f
+	@bl GetSystemTimerBase
+	@str r2,[r0]
+
+	bl EnableIRQ
+fin$:
+	ldmfd sp!, {r0-r3, r12, r14}
+
+
+.globl timer_isr
+timer_isr:
+push {lr}
+
+	mov r1, #0
+	mov r0,#16
+	bl SetGpio
+
+pop {pc}

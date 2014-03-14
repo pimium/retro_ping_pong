@@ -1,0 +1,153 @@
+
+Discarded input sections
+
+ .bss           0x00000000        0x0 build/drawing.o
+ .ARM.attributes
+                0x00000000        0x0 build/drawing.o
+ .glue_7        0x00000000        0x0 build/drawing.o
+ .glue_7t       0x00000000        0x0 build/drawing.o
+ .vfp11_veneer  0x00000000        0x0 build/drawing.o
+ .janus_2cc_veneer
+                0x00000000        0x0 build/drawing.o
+ .v4_bx         0x00000000        0x0 build/drawing.o
+ .bss           0x00000000        0x0 build/frameBuffer.o
+ .ARM.attributes
+                0x00000000        0x0 build/frameBuffer.o
+ .glue_7        0x00000000        0x0 build/frameBuffer.o
+ .glue_7t       0x00000000        0x0 build/frameBuffer.o
+ .vfp11_veneer  0x00000000        0x0 build/frameBuffer.o
+ .janus_2cc_veneer
+                0x00000000        0x0 build/frameBuffer.o
+ .v4_bx         0x00000000        0x0 build/frameBuffer.o
+ .bss           0x00000000        0x0 build/gpio.o
+ .ARM.attributes
+                0x00000000        0x0 build/gpio.o
+ .glue_7        0x00000000        0x0 build/gpio.o
+ .glue_7t       0x00000000        0x0 build/gpio.o
+ .vfp11_veneer  0x00000000        0x0 build/gpio.o
+ .janus_2cc_veneer
+                0x00000000        0x0 build/gpio.o
+ .v4_bx         0x00000000        0x0 build/gpio.o
+ .bss           0x00000000        0x0 build/interrupt.o
+ .ARM.attributes
+                0x00000000        0x0 build/interrupt.o
+ .glue_7        0x00000000        0x0 build/interrupt.o
+ .glue_7t       0x00000000        0x0 build/interrupt.o
+ .vfp11_veneer  0x00000000        0x0 build/interrupt.o
+ .janus_2cc_veneer
+                0x00000000        0x0 build/interrupt.o
+ .v4_bx         0x00000000        0x0 build/interrupt.o
+ .bss           0x00000000        0x0 build/mailbox.o
+ .ARM.attributes
+                0x00000000        0x0 build/mailbox.o
+ .glue_7        0x00000000        0x0 build/mailbox.o
+ .glue_7t       0x00000000        0x0 build/mailbox.o
+ .vfp11_veneer  0x00000000        0x0 build/mailbox.o
+ .janus_2cc_veneer
+                0x00000000        0x0 build/mailbox.o
+ .v4_bx         0x00000000        0x0 build/mailbox.o
+ .bss           0x00000000        0x0 build/main.o
+ .ARM.attributes
+                0x00000000        0x0 build/main.o
+ .glue_7        0x00000000        0x0 build/main.o
+ .glue_7t       0x00000000        0x0 build/main.o
+ .vfp11_veneer  0x00000000        0x0 build/main.o
+ .janus_2cc_veneer
+                0x00000000        0x0 build/main.o
+ .v4_bx         0x00000000        0x0 build/main.o
+ .bss           0x00000000        0x0 build/random.o
+ .ARM.attributes
+                0x00000000        0x0 build/random.o
+ .glue_7        0x00000000        0x0 build/random.o
+ .glue_7t       0x00000000        0x0 build/random.o
+ .vfp11_veneer  0x00000000        0x0 build/random.o
+ .janus_2cc_veneer
+                0x00000000        0x0 build/random.o
+ .v4_bx         0x00000000        0x0 build/random.o
+ .bss           0x00000000        0x0 build/systemTimer.o
+ .ARM.attributes
+                0x00000000        0x0 build/systemTimer.o
+ .glue_7        0x00000000        0x0 build/systemTimer.o
+ .glue_7t       0x00000000        0x0 build/systemTimer.o
+ .vfp11_veneer  0x00000000        0x0 build/systemTimer.o
+ .janus_2cc_veneer
+                0x00000000        0x0 build/systemTimer.o
+ .v4_bx         0x00000000        0x0 build/systemTimer.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD build/drawing.o
+LOAD build/frameBuffer.o
+LOAD build/gpio.o
+LOAD build/interrupt.o
+LOAD build/mailbox.o
+LOAD build/main.o
+LOAD build/random.o
+LOAD build/systemTimer.o
+
+.init           0x00008000       0x44
+ *(.init)
+ .init          0x00008000       0x44 build/main.o
+                0x00008000                _start
+
+.text           0x00008044      0x6cc
+ *(.text)
+ .text          0x00008044      0x1c0 build/drawing.o
+                0x00008194                DrawBalken
+                0x0000805c                SetGraphicsAddress
+                0x00008068                DrawPixel
+                0x0000812c                DrawBall
+                0x00008044                SetForeColour
+                0x000080b0                DrawLine
+ .text          0x00008204       0x60 build/frameBuffer.o
+                0x00008204                InitialiseFrameBuffer
+ .text          0x00008264      0x104 build/gpio.o
+                0x00008334                GetGpioValue
+                0x0000826c                SetGpioFunction
+                0x00008264                GetGpioAddress
+                0x000082bc                SetGpio
+                0x000082f8                SetGpioPin23
+                0x00008310                GetValueGpioPin23
+ .text          0x00008368        0x0 build/interrupt.o
+ .text          0x00008368       0x6c build/mailbox.o
+                0x00008370                MailboxRead
+                0x000083a4                MailboxWrite
+                0x00008368                GetMailboxBase
+ .text          0x000083d4      0x22c build/main.o
+                0x000085c8                timer_isr
+ .text          0x00008600       0x18 build/random.o
+                0x00008600                Random
+ .text          0x00008618       0xf8 build/systemTimer.o
+                0x00008618                GetSystemTimerBase
+                0x0000865c                SetTimer
+                0x00008674                EnableTimerInterrupt
+                0x00008690                EnableIRQ
+                0x000086e0                Wait
+                0x00008638                EnableBasicIRQ
+                0x000086b0                InterruptHandler
+                0x0000864c                GetTimeStamp
+                0x00008628                DisableBasicIRQ
+                0x00008620                GetInterruptBase
+                0x000086a0                DisableIRQ
+
+.data           0x00009000     0x2008
+ *(.data)
+ .data          0x00009000        0x8 build/drawing.o
+ *fill*         0x00009008      0xff8 00
+ .data          0x0000a000     0x1000 build/frameBuffer.o
+                0x0000a000                FrameBufferInfo
+ .data          0x0000b000        0x0 build/gpio.o
+ .data          0x0000b000        0x0 build/interrupt.o
+ .data          0x0000b000        0x0 build/mailbox.o
+ .data          0x0000b000        0x8 build/main.o
+ .data          0x0000b008        0x0 build/random.o
+ .data          0x0000b008        0x0 build/systemTimer.o
+
+/DISCARD/
+ *(*)
+OUTPUT(build/output.elf elf32-littlearm)
