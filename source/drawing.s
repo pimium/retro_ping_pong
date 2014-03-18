@@ -177,9 +177,9 @@ DrawBall:
 	y1 .req r12
 
 	mov x0,r0
-	add x1,r0, #10
+	add x1,r0, #25
 	mov y0,r1
-	add y1,r1, #10
+	add y1,r1, #25
 
 	dx .req r4
 	dy .req r5 /* Note that we only ever use -deltay, so I store its negative

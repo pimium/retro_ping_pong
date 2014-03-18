@@ -37,6 +37,15 @@ Discarded input sections
  .janus_2cc_veneer
                 0x00000000        0x0 build/interrupt.o
  .v4_bx         0x00000000        0x0 build/interrupt.o
+ .bss           0x00000000        0x0 build/logic.o
+ .ARM.attributes
+                0x00000000        0x0 build/logic.o
+ .glue_7        0x00000000        0x0 build/logic.o
+ .glue_7t       0x00000000        0x0 build/logic.o
+ .vfp11_veneer  0x00000000        0x0 build/logic.o
+ .janus_2cc_veneer
+                0x00000000        0x0 build/logic.o
+ .v4_bx         0x00000000        0x0 build/logic.o
  .bss           0x00000000        0x0 build/mailbox.o
  .ARM.attributes
                 0x00000000        0x0 build/mailbox.o
@@ -85,6 +94,7 @@ LOAD build/drawing.o
 LOAD build/frameBuffer.o
 LOAD build/gpio.o
 LOAD build/interrupt.o
+LOAD build/logic.o
 LOAD build/mailbox.o
 LOAD build/main.o
 LOAD build/random.o
@@ -95,7 +105,7 @@ LOAD build/systemTimer.o
  .init          0x00008000       0x44 build/main.o
                 0x00008000                _start
 
-.text           0x00008044      0x6cc
+.text           0x00008044      0x724
  *(.text)
  .text          0x00008044      0x1c0 build/drawing.o
                 0x00008194                DrawBalken
@@ -114,26 +124,28 @@ LOAD build/systemTimer.o
                 0x000082f8                SetGpioPin23
                 0x00008310                GetValueGpioPin23
  .text          0x00008368        0x0 build/interrupt.o
- .text          0x00008368       0x6c build/mailbox.o
-                0x00008370                MailboxRead
-                0x000083a4                MailboxWrite
-                0x00008368                GetMailboxBase
- .text          0x000083d4      0x22c build/main.o
-                0x000085c8                timer_isr
- .text          0x00008600       0x18 build/random.o
-                0x00008600                Random
- .text          0x00008618       0xf8 build/systemTimer.o
-                0x00008618                GetSystemTimerBase
-                0x0000865c                SetTimer
-                0x00008674                EnableTimerInterrupt
-                0x00008690                EnableIRQ
-                0x000086e0                Wait
-                0x00008638                EnableBasicIRQ
-                0x000086b0                InterruptHandler
-                0x0000864c                GetTimeStamp
-                0x00008628                DisableBasicIRQ
-                0x00008620                GetInterruptBase
-                0x000086a0                DisableIRQ
+ .text          0x00008368       0x60 build/logic.o
+                0x00008368                getNewBallPos
+ .text          0x000083c8       0x6c build/mailbox.o
+                0x000083d0                MailboxRead
+                0x00008404                MailboxWrite
+                0x000083c8                GetMailboxBase
+ .text          0x00008434      0x224 build/main.o
+                0x0000861c                timer_isr
+ .text          0x00008658       0x18 build/random.o
+                0x00008658                Random
+ .text          0x00008670       0xf8 build/systemTimer.o
+                0x00008670                GetSystemTimerBase
+                0x000086b4                SetTimer
+                0x000086cc                EnableTimerInterrupt
+                0x000086e8                EnableIRQ
+                0x00008738                Wait
+                0x00008690                EnableBasicIRQ
+                0x00008708                InterruptHandler
+                0x000086a4                GetTimeStamp
+                0x00008680                DisableBasicIRQ
+                0x00008678                GetInterruptBase
+                0x000086f8                DisableIRQ
 
 .data           0x00009000     0x2008
  *(.data)
@@ -143,6 +155,7 @@ LOAD build/systemTimer.o
                 0x0000a000                FrameBufferInfo
  .data          0x0000b000        0x0 build/gpio.o
  .data          0x0000b000        0x0 build/interrupt.o
+ .data          0x0000b000        0x0 build/logic.o
  .data          0x0000b000        0x0 build/mailbox.o
  .data          0x0000b000        0x8 build/main.o
  .data          0x0000b008        0x0 build/random.o

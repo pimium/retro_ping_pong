@@ -180,7 +180,6 @@ bl SetGpioFunction
 .unreq pinNum
 .unreq pinFunc
 
-
 @bl SetGpioPin23
 
 mov r0,#0xff
@@ -196,34 +195,35 @@ render$:
 	mov r0, x
 	mov r1, y
 	bl DrawBall
+	mov r0, x
+	mov r1, y
+	mov r2, pa
+	mov r3, pb
+.unreq pa
+.unreq pb
+.unreq x
+.unreq y
+	bl getNewBallPos
+x .req r4
+y .req r5
+pa .req r6
+pb .req r7
 
-	cmp pa, #0
-	ble pa_negatif$
-	ldr r0, =1260
-	cmp x, r0
-	neggt pa, pa
-	ldrgt x, =1260
-	b pa_fin$
-pa_negatif$:
-	cmp x, #0
-	neglt pa, pa
-	movlt x, #0
-pa_fin$:
-add x, pa
+	mov x, r0
+	mov y, r1
+	mov pa, r2
+	mov pb, r3
 
-cmp pb, #0
-	ble pb_negatif$
-	cmp y, #760
-	neggt pb, pb
-	movgt y, #760
-	b pb_fin$
-pb_negatif$:
-	cmp y, #30
-	negle pb, pb
-	movle y, #30
-pb_fin$:
-add y, pb
+	ldr r0, =730
+	cmp y, r0
+	blt weiter$
+	cmp x, balkenX
+	blt balken_ausser$
+	add r1, balkenX, #100
+	cmp x, r1
+	bgt balken_ausser$
 
+weiter$:
 	mov r0,#0xff
 	bl SetForeColour
 	mov r0, x
@@ -250,7 +250,7 @@ bl SetForeColour
 mov r0, balkenX
 bl DrawBalken
 
-sub balkenX, #1
+sub balkenX, #8
 cmp balkenX, #0
 ldreq r1, =1260
 moveq balkenX, r1
@@ -271,8 +271,8 @@ bl SetForeColour
 mov r0, balkenX
 bl DrawBalken
 
-add balkenX, #1
-ldreq r1, =1260
+add balkenX, #8
+ldr r1, =1260
 cmp balkenX, r1
 moveq balkenX, #0
 mov r0,#0xff
@@ -283,17 +283,25 @@ bl DrawBalken
 
 	b render$
 
+balken_ausser$:
+	mov r0,#0xff
+	bl SetForeColour
+	mov r0, x
+	mov r1, y
+	bl DrawBall
+b balken_ausser$
+
 	.unreq x
 	.unreq y
 
 	.unreq balkenX
 	.unreq counter_diff
 
-/*
-* Use our new SetGpio function to set GPIO 16 to low, causing the LED to turn 
-* on.
-*/
 
+/*
+* Timer Interrupt Routine
+* 
+*/
 
 .globl timer_isr
 timer_isr:
@@ -306,9 +314,9 @@ push {lr}
 	str r0, [r1]
 
 	bl GetInterruptBase
-	str r2,[r0,#0x40c] @ reset control register
-	ldr r2, =0x00007000
-	str r2,[r0,#0x400] @ load register
+	str r1,[r0,#0x40c] @ reset control register
+	ldr r1, =0x00007000
+	str r1,[r0,#0x400] @ load register
 pop {pc}
 
 /* Labels needed to access data */
